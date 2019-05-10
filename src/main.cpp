@@ -111,3 +111,75 @@ void kochFractal(std::list<Line*>& lines)
         delete (*itr);          // Desaloca o espaço na memória
     }
 }
+
+int main(int argc, char const *argv[])
+{
+    // Inicializa o SDL2
+    SDL_Init(SDL_INIT_EVERYTHING);
+    
+    // Cria uma janela de visualização
+    window = SDL_CreateWindow("Fractal de Koch", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCR_W, SCR_H, SDL_WINDOW_SHOWN);
+    
+    // Cria o renderizados
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+    // Define a cor de fundo
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    
+    // Três opções de inicialização do fractal são dadas a seguir. Apenas uma delas deve ser descomentada.
+
+    // OPÇÃO 1 - LINHA HORIZONTAL
+    // lines.push_back(new Line(SCR_W - 10, SCR_H / 2.0, SCR_W - 20, 180.0));
+
+    // OPÇÃO 2 - LINHA VERTICAL
+    // lines.push_back(new Line(SCR_W / 1.5, 10, SCR_H - 20, 90.0));
+
+    // OPÇÃO 3 - TRIÂNGULO EQUILATERO
+    lines.push_back(new Line(SCR_W - 100, 150, SCR_W - 200, 180.0));
+    lines.push_back(new Line(100, 150, SCR_W - 200, 60.0));
+    Line* lineS = new Line(SCR_W - 100, 150, SCR_W - 200, 120.0);
+    lineS->x += cos(lineS->angle * (M_PI / 180.0)) * lineS->length;
+    lineS->y += sin(lineS->angle * (M_PI / 180.0)) * lineS->length;
+    lineS->angle -= 180.0;
+    lines.push_back(lineS);
+
+    // Loop principal do programa
+    while (!quit)
+    {
+        while (SDL_PollEvent(&in))
+            if (in.type == SDL_QUIT)    
+                quit = true;
+        
+        // Limpa o renderizador
+        SDL_RenderClear(renderer);
+
+        // Renderiza todas as linhas da lista de linhas
+        for (auto itr = lines.begin(); itr != lines.end(); ++itr)   
+            (*itr)->draw();
+
+        // Atualiza a janela
+        SDL_RenderPresent(renderer);
+
+        // Delay que permite a visualização de cada iteração
+        SDL_Delay(2500);
+
+        // Aplica a função que atualiza as linhas de acordo com as regras do fractal de Koch
+        kochFractal(lines);
+    }
+
+    // Limpa a memória de todas as linhas que ainda restarem na lista
+    for (auto itr = lines.begin(); itr != lines.end(); ++itr)
+        delete (*itr);
+    
+    // Termina o renderizador
+    SDL_DestroyRenderer(renderer);
+
+    // Termina a janela
+    SDL_DestroyWindow(window);
+
+    // Libera todos os recursos do SDL
+    SDL_Quit();
+
+    return 0;
+}
+
