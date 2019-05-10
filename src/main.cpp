@@ -118,7 +118,7 @@ int main(int argc, char const *argv[])
     SDL_Init(SDL_INIT_EVERYTHING);
     
     // Cria uma janela de visualização
-    window = SDL_CreateWindow("Fractal de Koch", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCR_W, SCR_H, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Fractal de Koch", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCR_W, SCR_H * 1.5, SDL_WINDOW_SHOWN);
     
     // Cria o renderizados
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -135,9 +135,9 @@ int main(int argc, char const *argv[])
     // lines.push_back(new Line(SCR_W / 1.5, 10, SCR_H - 20, 90.0));
 
     // OPÇÃO 3 - TRIÂNGULO EQUILATERO
-    lines.push_back(new Line(SCR_W - 100, 150, SCR_W - 200, 180.0));
-    lines.push_back(new Line(100, 150, SCR_W - 200, 60.0));
-    Line* lineS = new Line(SCR_W - 100, 150, SCR_W - 200, 120.0);
+    lines.push_back(new Line(SCR_W - 100, 200, SCR_W - 200, 180.0));
+    lines.push_back(new Line(100, 200, SCR_W - 200, 60.0));
+    Line* lineS = new Line(SCR_W - 100, 200, SCR_W - 200, 120.0);
     lineS->x += cos(lineS->angle * (M_PI / 180.0)) * lineS->length;
     lineS->y += sin(lineS->angle * (M_PI / 180.0)) * lineS->length;
     lineS->angle -= 180.0;
@@ -182,4 +182,3 @@ int main(int argc, char const *argv[])
 
     return 0;
 }
-
